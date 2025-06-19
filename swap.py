@@ -1,4 +1,5 @@
-import time
+import datetime
+import sys
 import random
 import json
 import os
@@ -8,6 +9,20 @@ from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 from pyfiglet import Figlet
 import blessed
+
+# توليد ساعة تشغيل عشوائية يومياً (مثلاً الساعة 10 أو 17)
+random.seed(datetime.date.today().toordinal())
+chosen_hour = random.randint(0, 23)
+chosen_minute = random.randint(0, 59)
+now = datetime.datetime.utcnow()
+
+if now.hour != chosen_hour or now.minute != chosen_minute:
+    print(f"[INFO] الآن: {now.hour}:{now.minute} UTC، وليس موعد التشغيل العشوائي اليوم {chosen_hour}:{chosen_minute}. الخروج.")
+    sys.exit(0)
+
+# تحديد مدة عشوائية للتشغيل (من 5 إلى 15 دقيقة)
+end_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=random.randint(5, 15))
+print(f"[INFO] التشغيل بدأ وسيستمر حتى {end_time.strftime('%H:%M:%S')} UTC")
 
 def display_header():
     term = blessed.Terminal()
@@ -115,7 +130,7 @@ def send_phrs(to_address):
 if __name__ == "__main__":
     display_header()
 
-    while True:
+    while datetime.datetime.utcnow() < end_time:
         generate_wallets()
         try:
             with open("generated_wallets.json", "r") as f:
