@@ -1,0 +1,6 @@
+web3
+eth-account
+cryptography
+python-dotenv
+pyfiglet
+blessed
