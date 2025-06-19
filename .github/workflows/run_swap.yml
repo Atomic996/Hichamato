@@ -2,7 +2,7 @@ name: Run swap.py daily
 
 on:
   schedule:
-    - cron: '0 13 * * *'  # كل يوم الساعة 14:00 بتوقيت الجزائر
+    - cron: '0 * * * *'  # كل يوم الساعة 14:00 بتوقيت الجزائر
   workflow_dispatch:
 
 jobs:
