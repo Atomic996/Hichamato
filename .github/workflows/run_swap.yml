@@ -1,0 +1,26 @@
+name: Run swap.py daily
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # يشغله كل يوم الساعة 14:00 بتوقيت الجزائر (13:00 UTC)
+  workflow_dispatch:  # لتشغيله يدويًا إذا أردت من GitHub
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run swap.py for 10 minutes
+        run: |
+          timeout 600 python swap.py
